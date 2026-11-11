@@ -1,257 +1,578 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="description" content="Gerencie seus veículos, manutenções e despesas.">
+    <meta name="theme-color" content="#17191d">
     <title>Garagem Digital</title>
-
     <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
 
-    <div class="layout">
+<div class="layout">
 
-        <aside class="sidebar">
-            <nav aria-label="Menu principal">
-                <ul class="menu-list">
-                    <li>
-                        <a href="#inicio">Visão Geral</a>
-                    </li>
-                    <li>
-                        <a href="#garagem">Minha Garagem</a>
-                    </li>
-                    <li>
-                        <a href="#estatisticas">Estatísticas</a>
-                    </li>
-                    <li>
-                        <a href="#manutencoes">Manutenções</a>
-                    </li>
-                    <li>
-                        <a href="#despesas">Despesas</a>
-                    </li>
-                    <li>
-                        <a href="#configuracoes">Configurações</a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
+    <!-- MENU LATERAL -->
+    <aside class="sidebar">
+        <nav aria-label="Menu principal">
+            <ul class="menu-list">
+                <li><a href="#inicio" class="active">Visão Geral</a></li>
+                <li><a href="#garagem">Minha Garagem</a></li>
+                <li><a href="#estatisticas">Estatísticas</a></li>
+                <li><a href="#manutencoes">Manutenções</a></li>
+                <li><a href="#despesas">Despesas</a></li>
+                <li><a href="#configuracoes">Configurações</a></li>
+            </ul>
+        </nav>
+    </aside>
 
-        <div class="conteudo">
+    <div class="conteudo">
 
-            <header>
-                <div>
-                    <h1>Garagem Digital</h1>
-                    <p>Painel do motorista</p>
-                </div>
-
-                <button type="button" id="adicionar-veiculo">
-                    Adicionar Veículo
-                </button>
-            </header>
-
-            <main>
-
-                
-<section id="inicio" class="dashboard">
-
-    <div class="dashboard-header">
-        <div>
-            <h2>Visão Geral</h2>
-            <p>Acompanhe o resumo da sua garagem.</p>
-        </div>
-    </div>
-
-    <!-- Indicadores -->
-    <div class="dashboard-cards">
-
-        <article class="dashboard-card">
-            <span>Veículos cadastrados</span>
-            <h3 id="total-veiculos">0</h3>
-            <p>Na sua garagem</p>
-        </article>
-
-        <article class="dashboard-card">
-            <span>Gastos do mês</span>
-            <h3 id="gastos-mes">R$ 0,00</h3>
-            <p>Despesas registradas</p>
-        </article>
-
-        <article class="dashboard-card">
-            <span>Manutenções</span>
-            <h3 id="total-manutencoes">0</h3>
-            <p>Serviços registrados</p>
-        </article>
-
-        <article class="dashboard-card">
-            <span>Total investido</span>
-            <h3 id="total-investido">R$ 0,00</h3>
-            <p>Em todos os veículos</p>
-        </article>
-
-    </div>
-
-    <!-- Atividades recentes -->
-    <div class="dashboard-section">
-
-        <h3>Últimas movimentações</h3>
-
-        <ul id="ultimas-movimentacoes">
-            <li>Nenhuma movimentação registrada.</li>
-        </ul>
-
-    </div>
-
-</section>
-
-                
-<section id="garagem">
-
-    <div class="secao-header">
-        <div>
-            <h2>Minha Garagem</h2>
-            <p>Gerencie seus veículos cadastrados.</p>
-        </div>
-
-        <button type="button" id="adicionar-veiculo">
-            + Adicionar Veículo
-        </button>
-    </div>
-
-    <!-- Formulário de cadastro -->
-    <div id="formulario-veiculo" class="formulario-container hidden">
-
-        <h3 id="titulo-formulario">Cadastrar veículo</h3>
-
-        <form id="form-veiculo">
-
-            <input type="hidden" id="veiculo-id">
-
-            <div class="form-grid">
-
-                <div class="campo">
-                    <label for="marca">Marca</label>
-                    <input type="text" id="marca" required
-                        placeholder="Ex: Volkswagen">
-                </div>
-
-                <div class="campo">
-                    <label for="modelo">Modelo</label>
-                    <input type="text" id="modelo" required
-                        placeholder="Ex: Golf GTI">
-                </div>
-
-                <div class="campo">
-                    <label for="ano">Ano</label>
-                    <input type="number" id="ano" required
-                        min="1900" max="2100" placeholder="2020">
-                </div>
-
-                <div class="campo">
-                    <label for="placa">Placa</label>
-                    <input type="text" id="placa"
-                        maxlength="8" placeholder="ABC-1234">
-                </div>
-
-                <div class="campo">
-                    <label for="motor">Motor</label>
-                    <input type="text" id="motor"
-                        placeholder="Ex: 2.0 TSI">
-                </div>
-
-                <div class="campo">
-                    <label for="combustivel">Combustível</label>
-                    <select id="combustivel">
-                        <option value="">Selecione</option>
-                        <option value="Flex">Flex</option>
-                        <option value="Gasolina">Gasolina</option>
-                        <option value="Diesel">Diesel</option>
-                        <option value="Etanol">Etanol</option>
-                        <option value="Elétrico">Elétrico</option>
-                        <option value="Híbrido">Híbrido</option>
-                    </select>
-                </div>
-
-                <div class="campo">
-                    <label for="quilometragem">Quilometragem atual</label>
-                    <input type="number" id="quilometragem"
-                        min="0" required placeholder="50000">
-                </div>
-
-                <div class="campo">
-                    <label for="cor">Cor</label>
-                    <input type="text" id="cor"
-                        placeholder="Ex: Preto">
-                </div>
-
+        <!-- CABEÇALHO -->
+        <header>
+            <div>
+                <h1>Garagem Digital</h1>
+                <p>Painel do motorista</p>
             </div>
 
-            <div class="form-acoes">
-                <button type="submit">Salvar veículo</button>
+            <button type="button" id="adicionar-veiculo">
+                + Adicionar Veículo
+            </button>
+        </header>
 
-                <button type="button" id="cancelar-cadastro"
-                    class="btn-secundario">
-                    Cancelar
-                </button>
-            </div>
+        <main>
 
-        </form>
+            <!-- ================================= -->
+            <!-- VISÃO GERAL -->
+            <!-- ================================= -->
 
-    </div>
+            <section id="inicio" class="dashboard">
 
-    <!-- Lista de veículos -->
-    <div id="lista-veiculos" class="veiculos-grid">
-    </div>
+                <div class="dashboard-header">
+                    <div>
+                        <h2>Visão Geral</h2>
+                        <p>Acompanhe o resumo da sua garagem.</p>
+                    </div>
+                </div>
 
-</section>
+                <div class="dashboard-cards">
 
+                    <article class="dashboard-card">
+                        <span>Veículos cadastrados</span>
+                        <h3 id="total-veiculos">0</h3>
+                        <p>Na sua garagem</p>
+                    </article>
 
-                <section id="estatisticas">
-                    <h2>Estatísticas</h2>
-                    <p>
-                        Visualize os dados e métricas sobre
-                        suas atividades na garagem.
-                    </p>
-                </section>
+                    <article class="dashboard-card">
+                        <span>Gastos do mês</span>
+                        <h3 id="gastos-mes">R$ 0,00</h3>
+                        <p>Despesas registradas</p>
+                    </article>
 
-                <section id="manutencoes">
-                    <h2>Manutenções</h2>
-                    <p>
-                        Registre e acompanhe as manutenções
-                        dos seus veículos.
-                    </p>
+                    <article class="dashboard-card">
+                        <span>Manutenções</span>
+                        <h3 id="total-manutencoes">0</h3>
+                        <p>Serviços registrados</p>
+                    </article>
 
-                    <ul id="lista-manutencoes">
-                      
+                    <article class="dashboard-card">
+                        <span>Total investido</span>
+                        <h3 id="total-investido">R$ 0,00</h3>
+                        <p>Em todos os veículos</p>
+                    </article>
+
+                </div>
+
+                <div class="dashboard-section">
+                    <h3>Últimas movimentações</h3>
+
+                    <ul id="ultimas-movimentacoes">
+                        <li>Nenhuma movimentação registrada.</li>
                     </ul>
-                </section>
+                </div>
 
-                <section id="despesas">
-                    <h2>Despesas</h2>
+            </section>
+
+
+            <!-- ================================= -->
+            <!-- MINHA GARAGEM -->
+            <!-- ================================= -->
+
+            <section id="garagem">
+
+                <div class="secao-header">
+                    <div>
+                        <h2>Minha Garagem</h2>
+                        <p>Gerencie seus veículos cadastrados.</p>
+                    </div>
+
+                    <button type="button" id="adicionar-veiculo-garagem">
+                        + Adicionar Veículo
+                    </button>
+                </div>
+
+                <!-- FORMULÁRIO DE VEÍCULO -->
+
+                <div id="formulario-veiculo"
+                     class="formulario-container hidden">
+
+                    <h3 id="titulo-formulario">Cadastrar veículo</h3>
+
+                    <form id="form-veiculo">
+
+                        <input type="hidden" id="veiculo-id">
+
+                        <div class="form-grid">
+
+                            <div class="campo">
+                                <label for="marca">Marca *</label>
+                                <input type="text" id="marca"
+                                       required placeholder="Ex: Volkswagen">
+                            </div>
+
+                            <div class="campo">
+                                <label for="modelo">Modelo *</label>
+                                <input type="text" id="modelo"
+                                       required placeholder="Ex: Golf GTI">
+                            </div>
+
+                            <div class="campo">
+                                <label for="ano">Ano *</label>
+                                <input type="number" id="ano"
+                                       required min="1900" max="2100"
+                                       placeholder="2020">
+                            </div>
+
+                            <div class="campo">
+                                <label for="placa">Placa</label>
+                                <input type="text" id="placa"
+                                       maxlength="8" placeholder="ABC-1234">
+                            </div>
+
+                            <div class="campo">
+                                <label for="motor">Motor</label>
+                                <input type="text" id="motor"
+                                       placeholder="Ex: 2.0 TSI">
+                            </div>
+
+                            <div class="campo">
+                                <label for="combustivel">Combustível</label>
+                                <select id="combustivel">
+                                    <option value="">Selecione</option>
+                                    <option value="Flex">Flex</option>
+                                    <option value="Gasolina">Gasolina</option>
+                                    <option value="Diesel">Diesel</option>
+                                    <option value="Etanol">Etanol</option>
+                                    <option value="Elétrico">Elétrico</option>
+                                    <option value="Híbrido">Híbrido</option>
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <label for="quilometragem">
+                                    Quilometragem atual *
+                                </label>
+                                <input type="number" id="quilometragem"
+                                       min="0" required placeholder="50000">
+                            </div>
+
+                            <div class="campo">
+                                <label for="cor">Cor</label>
+                                <input type="text" id="cor"
+                                       placeholder="Ex: Preto">
+                            </div>
+
+                        </div>
+
+                        <div class="form-acoes">
+                            <button type="submit">Salvar veículo</button>
+
+                            <button type="button"
+                                    id="cancelar-cadastro"
+                                    class="btn-secundario">
+                                Cancelar
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- VEÍCULOS CADASTRADOS -->
+
+                <div id="lista-veiculos" class="veiculos-grid"></div>
+
+            </section>
+
+
+            <!-- ================================= -->
+            <!-- ESTATÍSTICAS -->
+            <!-- ================================= -->
+
+            <section id="estatisticas">
+
+                <h2>Estatísticas</h2>
+
+                <p>
+                    Acompanhe os indicadores financeiros e o histórico
+                    de utilização dos seus veículos.
+                </p>
+
+                <div class="dashboard-cards">
+
+                    <article class="dashboard-card">
+                        <span>Veículos na garagem</span>
+                        <h3 id="estatistica-veiculos">0</h3>
+                        <p>Total cadastrado</p>
+                    </article>
+
+                    <article class="dashboard-card">
+                        <span>Despesas registradas</span>
+                        <h3 id="estatistica-despesas">0</h3>
+                        <p>Lançamentos financeiros</p>
+                    </article>
+
+                    <article class="dashboard-card">
+                        <span>Manutenções realizadas</span>
+                        <h3 id="estatistica-manutencoes">0</h3>
+                        <p>Serviços registrados</p>
+                    </article>
+
+                    <article class="dashboard-card">
+                        <span>Investimento acumulado</span>
+                        <h3 id="estatistica-investimento">R$ 0,00</h3>
+                        <p>Total registrado</p>
+                    </article>
+
+                </div>
+
+                <div class="dashboard-section">
+                    <h3>Resumo financeiro</h3>
                     <p>
-                        Acompanhe os gastos com combustível,
-                        manutenção, documentação e outros custos.
+                        Os valores devem ser calculados a partir dos
+                        registros de despesas e manutenções.
+                    </p>
+                </div>
+
+            </section>
+
+
+            <!-- ================================= -->
+            <!-- MANUTENÇÕES -->
+            <!-- ================================= -->
+
+            <section id="manutencoes">
+
+                <div class="secao-header">
+                    <div>
+                        <h2>Manutenções</h2>
+                        <p>
+                            Gerencie os serviços e revisões dos seus veículos.
+                        </p>
+                    </div>
+
+                    <button type="button" id="abrir-form-manutencao">
+                        + Nova manutenção
+                    </button>
+                </div>
+
+                <!-- ALERTAS -->
+
+                <div id="alertas-manutencao"
+                     class="alertas-manutencao"></div>
+
+                <!-- FORMULÁRIO -->
+
+                <div id="formulario-manutencao"
+                     class="formulario-container hidden">
+
+                    <h3 id="titulo-form-manutencao">
+                        Registrar manutenção
+                    </h3>
+
+                    <form id="form-manutencao">
+
+                        <input type="hidden" id="manutencao-id">
+
+                        <div class="form-grid">
+
+                            <div class="campo">
+                                <label for="manutencao-veiculo">
+                                    Veículo *
+                                </label>
+
+                                <select id="manutencao-veiculo" required>
+                                    <option value="">
+                                        Selecione um veículo
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <label for="tipo-servico">
+                                    Tipo de serviço *
+                                </label>
+
+                                <select id="tipo-servico" required>
+                                    <option value="">Selecione</option>
+                                    <option value="Troca de óleo">
+                                        Troca de óleo
+                                    </option>
+                                    <option value="Revisão">Revisão</option>
+                                    <option value="Freios">Freios</option>
+                                    <option value="Pneus">Pneus</option>
+                                    <option value="Suspensão">Suspensão</option>
+                                    <option value="Motor">Motor</option>
+                                    <option value="Elétrica">Elétrica</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <label for="data-manutencao">Data *</label>
+                                <input type="date" id="data-manutencao"
+                                       required>
+                            </div>
+
+                            <div class="campo">
+                                <label for="km-manutencao">
+                                    Quilometragem *
+                                </label>
+                                <input type="number" id="km-manutencao"
+                                       min="0" required>
+                            </div>
+
+                            <div class="campo">
+                                <label for="valor-manutencao">
+                                    Valor (R$) *
+                                </label>
+                                <input type="number" id="valor-manutencao"
+                                       min="0" step="0.01" required>
+                            </div>
+
+                            <div class="campo">
+                                <label for="oficina-manutencao">
+                                    Oficina
+                                </label>
+                                <input type="text" id="oficina-manutencao"
+                                       placeholder="Nome da oficina">
+                            </div>
+
+                            <div class="campo">
+                                <label for="proxima-data">
+                                    Próxima revisão (data)
+                                </label>
+                                <input type="date" id="proxima-data">
+                            </div>
+
+                            <div class="campo">
+                                <label for="proxima-km">
+                                    Próxima revisão (km)
+                                </label>
+                                <input type="number" id="proxima-km"
+                                       min="0" placeholder="Ex: 60000">
+                            </div>
+
+                            <div class="campo campo-completo">
+                                <label for="descricao-manutencao">
+                                    Descrição
+                                </label>
+
+                                <textarea id="descricao-manutencao"
+                                          rows="3"
+                                          placeholder="Detalhes do serviço realizado"></textarea>
+                            </div>
+
+                        </div>
+
+                        <div class="form-acoes">
+
+                            <button type="submit">
+                                Salvar manutenção
+                            </button>
+
+                            <button type="button"
+                                    id="cancelar-manutencao"
+                                    class="btn-secundario">
+                                Cancelar
+                            </button>
+
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- HISTÓRICO -->
+
+                <div class="tabela-container">
+
+                    <h3>Histórico de manutenções</h3>
+
+                    <div class="tabela-scroll">
+
+                        <table class="tabela-manutencoes">
+
+                            <thead>
+                                <tr>
+                                    <th>Veículo</th>
+                                    <th>Serviço</th>
+                                    <th>Data</th>
+                                    <th>Quilometragem</th>
+                                    <th>Valor</th>
+                                    <th>Próxima revisão</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="corpo-tabela-manutencoes"></tbody>
+
+                        </table>
+
+                    </div>
+
+                    <p id="mensagem-tabela-vazia"
+                       class="mensagem-vazia hidden">
+                        Nenhuma manutenção registrada.
                     </p>
 
-                    <ul id="lista-despesas">
-                 
-                    </ul>
-                </section>
+                </div>
 
-                <section id="configuracoes">
-                    <h2>Configurações</h2>
-                    <p>
-                        Configure as preferências do seu painel.
-                    </p>
-                </section>
+            </section>
 
-            </main>
 
-        </div>
+            <!-- ================================= -->
+            <!-- DESPESAS -->
+            <!-- ================================= -->
 
-    </div>
-<script src="./js/veiculos.js"></script>
-<script src="./js/dashboard.js"></script>
-</body>
-</html>
+            <section id="despesas">
+
+                <div class="secao-header">
+                    <div>
+                        <h2>Despesas</h2>
+                        <p>
+                            Acompanhe os gastos com combustível,
+                            manutenção, documentação e outros custos.
+                        </p>
+                    </div>
+
+                    <button type="button" id="abrir-form-despesa">
+                        + Nova despesa
+                    </button>
+                </div>
+
+                <!-- FORMULÁRIO DE DESPESA -->
+
+                <div id="formulario-despesa"
+                     class="formulario-container hidden">
+
+                    <h3 id="titulo-form-despesa">
+                        Registrar despesa
+                    </h3>
+
+                    <form id="form-despesa">
+
+                        <input type="hidden" id="despesa-id">
+
+                        <div class="form-grid">
+
+                            <div class="campo">
+                                <label for="despesa-veiculo">
+                                    Veículo *
+                                </label>
+
+                                <select id="despesa-veiculo" required>
+                                    <option value="">
+                                        Selecione um veículo
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <label for="categoria-despesa">
+                                    Categoria *
+                                </label>
+
+                                <select id="categoria-despesa" required>
+                                    <option value="">Selecione</option>
+                                    <option value="Combustível">
+                                        Combustível
+                                    </option>
+                                    <option value="Documentação">
+                                        Documentação
+                                    </option>
+                                    <option value="IPVA">IPVA</option>
+                                    <option value="Seguro">Seguro</option>
+                                    <option value="Estacionamento">
+                                        Estacionamento
+                                    </option>
+                                    <option value="Pedágio">Pedágio</option>
+                                    <option value="Lavagem">Lavagem</option>
+                                    <option value="Multa">Multa</option>
+                                    <option value="Outros">Outros</option>
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <label for="data-despesa">Data *</label>
+                                <input type="date" id="data-despesa"
+                                       required>
+                            </div>
+
+                            <div class="campo">
+                                <label for="valor-despesa">
+                                    Valor (R$) *
+                                </label>
+
+                                <input type="number" id="valor-despesa"
+                                       min="0.01" step="0.01"
+                                       required placeholder="0,00">
+                            </div>
+
+                            <div class="campo">
+                                <label for="pagamento-despesa">
+                                    Forma de pagamento
+                                </label>
+
+                                <select id="pagamento-despesa">
+                                    <option value="">Selecione</option>
+                                    <option value="Dinheiro">Dinheiro</option>
+                                    <option value="Pix">Pix</option>
+                                    <option value="Débito">Débito</option>
+                                    <option value="Crédito">Crédito</option>
+                                    <option value="Transferência">
+                                        Transferência
+                                    </option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <label for="descricao-despesa">
+                                    Descrição
+                                </label>
+
+                                <input type="text" id="descricao-despesa"
+                                       placeholder="Detalhes da despesa">
+                            </div>
+
+                        </div>
+
+                        <div class="form-acoes">
+
+                            <button type="submit">
+                                Salvar despesa
+                            </button>
+
+                            <button type="button"
+                                    id="cancelar-despesa"
+                                    class="btn-secundario">
+                                Cancelar
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <!-- TABELA DE DESPESAS -->
