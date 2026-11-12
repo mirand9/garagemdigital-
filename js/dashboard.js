@@ -1,54 +1,104 @@
+function lerLista(chave) {
+    try {
+        const dados = JSON.parse(localStorage.getItem(chave) || "[]");
+        return Array.isArray(dados) ? dados : [];
+    } catch {
+        return [];
+    }
+}
 
 function atualizarDashboard() {
+    const veiculos = lerLista("garagem_veiculos");
+    const despesas = lerLista("garagem_despesas");
+    const manutencoes = lerLista("garagem_manutencoes");
 
-    const veiculos = JSON.parse(
-        localStorage.getItem("garagem_veiculos") || "[]"
-    );
-
-    document.getElementById("total-veiculos").textContent =
-        veiculos.length;
-
-    // Os outros indicadores serão conectados
-    // quando desenvolvermos despesas e manutenções.
-
-    const despesas = JSON.parse(
-        localStorage.getItem("garagem_despesas") || "[]"
-    );
-
-    const manutencoes = JSON.parse(
-        localStorage.getItem("garagem_manutencoes") || "[]"
-    );
-
-    const agora = new Date();
-
+    const hoje = new Date();
     const gastosMes = despesas
         .filter(item => {
-            const data = new Date(item.data + "T12:00:00");
-
-            return (
-                data.getMonth() === agora.getMonth() &&
-                data.getFullYear() === agora.getFullYear()
-            );
+            if (!item.data) return false;
+            const data = new Date(`${item.data}T12:00:00`);
+            return data.getMonth() === hoje.getMonth() &&
+                   data.getFullYear() === hoje.getFullYear();
         })
         .reduce((total, item) => total + Number(item.valor || 0), 0);
 
-    const totalInvestido = despesas.reduce(
+    const totalDespesas = despesas.reduce(
         (total, item) => total + Number(item.valor || 0), 0
     );
+    const totalManutencoes = manutencoes.reduce(
+        (total, item) => total + Number(item.valor || 0), 0
+    );
+    const totalInvestido = totalDespesas + totalManutencoes;
 
-    const moeda = valor => valor.toLocaleString("pt-BR", {
+    const moeda = valor => Number(valor).toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL"
     });
 
-    document.getElementById("gastos-mes").textContent =
-        moeda(gastosMes);
+    const atualizarTexto = (id, valor) => {
+        const elemento = document.getElementById(id);
+        if (elemento) elemento.textContent = valor;
+    };
 
-    document.getElementById("total-investido").textContent =
-        moeda(totalInvestido);
+    atualizarTexto("total-veiculos", veiculos.length);
+    atualizarTexto("gastos-mes", moeda(gastosMes));
+    atualizarTexto("total-manutencoes", manutencoes.length);
+    atualizarTexto("total-investido", moeda(totalInvestido));
 
-    document.getElementById("total-manutencoes").textContent =
-        manutencoes.length;
+    atualizarTexto("estatistica-veiculos", veiculos.length);
+    atualizarTexto("estatistica-despesas", despesas.length);
+    atualizarTexto("estatistica-manutencoes", manutencoes.length);
+    atualizarTexto("estatistica-investimento", moeda(totalInvestido));
+
+    renderizarUltimasMovimentacoes(despesas, manutencoes);
 }
 
-document.addEventListener("DOMContentLoaded", atualizarDashboard);
+function renderizarUltimasMovimentacoes(despesas, manutencoes) {
+    const lista = document.getElementById("ultimas-movimentacoes");
+    if (!lista) return;
+
+    const veiculos = lerLista("garagem_veiculos");
+    const nomeVeiculo = id => {
+        const veiculo = veiculos.find(item => item.id === id);
+        return veiculo ? `${veiculo.marca} ${veiculo.modelo}` : "Veículo removido";
+    };
+
+    const movimentacoes = [
+        ...despesas.map(item => ({
+            data: item.data,
+            tipo: "Despesa",
+            descricao: `${item.categoria || "Despesa"} · ${nomeVeiculo(item.veiculoId)}`,
+            valor: Number(item.valor || 0)
+        })),
+        ...manutencoes.map(item => ({
+            data: item.data,
+            tipo: "Manutenção",
+            descricao: `${item.tipo || "Serviço"} · ${nomeVeiculo(item.veiculoId)}`,
+            valor: Number(item.valor || 0)
+        }))
+    ].filter(item => item.data)
+     .sort((a, b) => b.data.localeCompare(a.data))
+     .slice(0, 5);
+
+    lista.innerHTML = "";
+
+    if (movimentacoes.length === 0) {
+        const vazio = document.createElement("li");
+        vazio.textContent = "Nenhuma movimentação registrada.";
+        lista.appendChild(vazio);
+        return;
+    }
+
+    movimentacoes.forEach(item => {
+        const linha = document.createElement("li");
+        const data = item.data.split("-").reverse().join("/");
+        const valor = item.valor.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
+        linha.textContent = `${data} · ${item.tipo}: ${item.descricao} · ${valor}`;
+        lista.appendChild(linha);
+    });
+}
+
+atualizarDashboard();

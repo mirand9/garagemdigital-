@@ -795,3 +795,14 @@ a:focus-visible {
     }
 }
 
+
+
+/* AJUSTES DO MÓDULO DE DESPESAS */
+#despesas .tabela-manutencoes {
+    min-width: 900px;
+}
+
+#configuracoes p {
+    color: var(--text-secondary);
+    margin-top: 10px;
+}

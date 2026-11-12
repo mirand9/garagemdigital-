@@ -576,3 +576,46 @@
                 </div>
 
                 <!-- TABELA DE DESPESAS -->
+
+                <div class="tabela-container">
+                    <h3>Histórico de despesas</h3>
+                    <div class="tabela-scroll">
+                        <table class="tabela-manutencoes">
+                            <thead>
+                                <tr>
+                                    <th>Veículo</th>
+                                    <th>Categoria</th>
+                                    <th>Descrição</th>
+                                    <th>Data</th>
+                                    <th>Pagamento</th>
+                                    <th>Valor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="corpo-tabela-despesas"></tbody>
+                        </table>
+                    </div>
+                    <p id="mensagem-despesas-vazias" class="mensagem-vazia hidden">
+                        Nenhuma despesa registrada.
+                    </p>
+                </div>
+
+            </section>
+
+            <section id="configuracoes">
+                <h2>Configurações</h2>
+                <p>Os dados deste projeto ficam salvos neste navegador, usando o armazenamento local.</p>
+                <p>Se limpar os dados do navegador, os registros poderão ser apagados.</p>
+            </section>
+
+        </main>
+    </div>
+</div>
+
+<script src="./js/veiculos.js"></script>
+<script src="./js/manutencoes.js"></script>
+<script src="./js/despesas.js"></script>
+<script src="./js/dashboard.js"></script>
+
+</body>
+</html>

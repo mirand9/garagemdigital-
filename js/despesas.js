@@ -173,7 +173,7 @@ formDespesa.addEventListener("submit", event => {
     }
 
     const despesa = {
-        id: id || crypto.randomUUID(),
+        id: id || gerarId(),
         veiculoId,
         categoria: document.getElementById("categoria-despesa").value,
         data,

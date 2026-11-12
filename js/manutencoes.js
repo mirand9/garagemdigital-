@@ -222,7 +222,7 @@ formularioManutencao.addEventListener("submit", event => {
     }
 
     const manutencao = {
-        id: id || crypto.randomUUID(),
+        id: id || gerarId(),
         veiculoId,
         tipo: document.getElementById("tipo-servico").value,
         data,
