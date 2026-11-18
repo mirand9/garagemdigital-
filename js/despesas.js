@@ -75,9 +75,7 @@ function formatarMoedaDespesa(valor) {
     });
 }
 
-// ========================================
-// CARREGAR VEÍCULOS
-// ========================================
+
 
 function carregarSelectDespesas() {
     const select = document.getElementById("despesa-veiculo");
@@ -101,9 +99,7 @@ function carregarSelectDespesas() {
     });
 }
 
-// ========================================
-// FORMULÁRIO
-// ========================================
+
 
 function abrirFormularioDespesa() {
     formDespesa.reset();
@@ -137,9 +133,6 @@ document.getElementById("abrir-form-despesa")
 document.getElementById("cancelar-despesa")
     .addEventListener("click", fecharFormularioDespesa);
 
-// ========================================
-// CADASTRAR / EDITAR
-// ========================================
 
 formDespesa.addEventListener("submit", event => {
     event.preventDefault();
@@ -212,9 +205,7 @@ formDespesa.addEventListener("submit", event => {
     }
 });
 
-// ========================================
-// EDITAR
-// ========================================
+
 
 function editarDespesa(id) {
     const despesa = obterDespesas()
@@ -238,9 +229,7 @@ function editarDespesa(id) {
     containerDespesa.classList.remove("hidden");
 }
 
-// ========================================
-// EXCLUIR
-// ========================================
+
 
 function excluirDespesa(id) {
     if (!confirm("Deseja excluir esta despesa?")) return;
@@ -257,9 +246,7 @@ function excluirDespesa(id) {
     }
 }
 
-// ========================================
-// RENDERIZAR TABELA
-// ========================================
+
 
 function renderizarDespesas() {
     const despesas = obterDespesas();
@@ -317,9 +304,7 @@ function renderizarDespesas() {
     });
 }
 
-// ========================================
-// INICIALIZAÇÃO
-// ========================================
+
 
 carregarSelectDespesas();
 renderizarDespesas();

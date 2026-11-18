@@ -16,7 +16,7 @@
 
 <div class="layout">
 
-    <!-- MENU LATERAL -->
+    
     <aside class="sidebar">
         <div class="brand">
             <span class="brand-mark" aria-hidden="true">GD</span>
@@ -41,7 +41,7 @@
 
     <div class="conteudo">
 
-        <!-- CABEÇALHO -->
+        
         <header>
             <div>
                 <h1>Garagem Digital</h1>
@@ -55,9 +55,7 @@
 
         <main>
 
-            <!-- ================================= -->
-            <!-- VISÃO GERAL -->
-            <!-- ================================= -->
+           
 
             <section id="inicio" class="dashboard">
 
@@ -134,9 +132,7 @@
             </section>
 
 
-            <!-- ================================= -->
-            <!-- MINHA GARAGEM -->
-            <!-- ================================= -->
+          
 
             <section id="garagem">
 
@@ -151,7 +147,7 @@
                     </button>
                 </div>
 
-                <!-- FORMULÁRIO DE VEÍCULO -->
+               
 
                 <div id="formulario-veiculo"
                      class="formulario-container hidden">
@@ -246,16 +242,14 @@
                     </form>
                 </div>
 
-                <!-- VEÍCULOS CADASTRADOS -->
+                
 
                 <div id="lista-veiculos" class="veiculos-grid"></div>
 
             </section>
 
 
-            <!-- ================================= -->
-            <!-- MOTORISTAS -->
-            <!-- ================================= -->
+           
 
             <section id="motoristas">
 
@@ -273,12 +267,12 @@
                     </button>
                 </div>
 
-                <!-- ALERTAS DE CNH -->
+               
 
                 <div id="alertas-motoristas"
                      class="alertas-manutencao"></div>
 
-                <!-- FORMULÁRIO DE MOTORISTA -->
+               
 
                 <div id="formulario-motorista"
                      class="formulario-container hidden">
@@ -416,24 +410,28 @@
                     </form>
                 </div>
 
-                <!-- MOTORISTAS CADASTRADOS -->
+               
 
                 <div id="lista-motoristas" class="veiculos-grid"></div>
 
             </section>
 
 
-            <!-- ================================= -->
-            <!-- ESTATÍSTICAS -->
-            <!-- ================================= -->
+         
 
-            <section id="estatisticas">
+            <div class="dashboard-section">
+                <h3>Gasto por motorista </h3>
 
-                <h2>Estatísticas</h2>
+                <p class="estat-nota">
+                    Soma as despesas e manutenções de todos os veículos atribuídos a cada motorista.
+                </p>
 
-                <p>
-                    Acompanhe os indicadores financeiros e o histórico
-                    de utilização dos seus veículos.
+                <ul id="gasto-motoristas" class="ranking"></ul>
+                
+                <p id="motoristas-vazio" class="mensagem-vazia hidden">
+                    Nenhum gasto registrado aida.
+                    </p>    
+            </div>
                 </p>
 
                 <div class="dashboard-cards">
@@ -475,9 +473,7 @@
             </section>
 
 
-            <!-- ================================= -->
-            <!-- MANUTENÇÕES -->
-            <!-- ================================= -->
+            
 
             <section id="manutencoes">
 
@@ -494,12 +490,12 @@
                     </button>
                 </div>
 
-                <!-- ALERTAS -->
+            
 
                 <div id="alertas-manutencao"
                      class="alertas-manutencao"></div>
 
-                <!-- FORMULÁRIO -->
+                
 
                 <div id="formulario-manutencao"
                      class="formulario-container hidden">
@@ -620,7 +616,7 @@
                     </form>
                 </div>
 
-                <!-- HISTÓRICO -->
+               
 
                 <div class="tabela-container">
 
@@ -658,9 +654,7 @@
             </section>
 
 
-            <!-- ================================= -->
-            <!-- DESPESAS -->
-            <!-- ================================= -->
+           
 
             <section id="despesas">
 
@@ -678,7 +672,7 @@
                     </button>
                 </div>
 
-                <!-- FORMULÁRIO DE DESPESA -->
+               
 
                 <div id="formulario-despesa"
                      class="formulario-container hidden">
@@ -793,7 +787,7 @@
 
                 </div>
 
-                <!-- TABELA DE DESPESAS -->
+                DESPESAS
 
                 <div class="tabela-container">
                     <h3>Histórico de despesas</h3>
@@ -822,9 +816,7 @@
 
             <section id="configuracoes">
                 <h2>Configurações</h2>
-                <p>Os dados deste projeto ficam salvos neste navegador, usando o armazenamento local.</p>
-                <p>Se limpar os dados do navegador, os registros poderão ser apagados.</p>
-                <p>Os dados pessoais dos motoristas (CPF, CNH, telefone e outros) também ficam apenas neste navegador. Evite usar este painel em computadores compartilhados.</p>
+                
             </section>
 
         </main>
@@ -836,6 +828,7 @@
 <script src="./js/despesas.js"></script>
 <script src="./js/motoristas.js"></script>
 <script src="./js/dashboard.js"></script>
+<script src="./js/estatisticas.js"></script>
 <script src="./js/navegacao.js"></script>
 
 </body>

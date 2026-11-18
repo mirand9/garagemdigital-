@@ -78,9 +78,7 @@ function obterNomeVeiculo(id) {
         : "Veículo não encontrado";
 }
 
-// ========================================
-// VEÍCULOS NO SELECT
-// ========================================
+
 
 function carregarVeiculosSelect() {
     const select = document.getElementById("manutencao-veiculo");
@@ -111,9 +109,7 @@ function carregarVeiculosSelect() {
     }
 }
 
-// ========================================
-// FORMULÁRIO
-// ========================================
+
 
 function abrirFormularioManutencao() {
     formularioManutencao.reset();
@@ -150,9 +146,7 @@ document.getElementById("abrir-form-manutencao")
 document.getElementById("cancelar-manutencao")
     .addEventListener("click", fecharFormularioManutencao);
 
-// ========================================
-// CADASTRAR / EDITAR
-// ========================================
+
 
 formularioManutencao.addEventListener("submit", event => {
     event.preventDefault();
@@ -264,9 +258,7 @@ formularioManutencao.addEventListener("submit", event => {
     }
 });
 
-// ========================================
-// EDITAR
-// ========================================
+
 
 function editarManutencao(id) {
     const manutencao = obterManutencoes()
@@ -306,9 +298,7 @@ function editarManutencao(id) {
     containerFormManutencao.classList.remove("hidden");
 }
 
-// ========================================
-// EXCLUIR
-// ========================================
+
 
 function excluirManutencao(id) {
     if (!confirm("Deseja excluir esta manutenção?")) return;
@@ -325,9 +315,7 @@ function excluirManutencao(id) {
     }
 }
 
-// ========================================
-// ALERTAS DE REVISÃO
-// ========================================
+
 
 function obterStatusRevisao(manutencao) {
     const veiculo = obterVeiculosManutencao()
@@ -442,9 +430,7 @@ function renderizarAlertasManutencao() {
     });
 }
 
-// ========================================
-// TABELA
-// ========================================
+
 
 function criarCelula(texto) {
     const td = document.createElement("td");
@@ -526,9 +512,7 @@ function renderizarManutencoes() {
     renderizarAlertasManutencao();
 }
 
-// ========================================
-// INICIALIZAÇÃO
-// ========================================
+
 
 carregarVeiculosSelect();
 renderizarManutencoes();

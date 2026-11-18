@@ -1,7 +1,4 @@
-// ========================================
-// NAVEGAÇÃO POR PÁGINAS
-// Mostra uma seção por vez, conforme o hash da URL (#garagem, #despesas...)
-// ========================================
+
 
 const PAGINA_PADRAO = "inicio";
 
@@ -40,8 +37,7 @@ window.addEventListener("hashchange", () => {
     mostrarPagina(paginaDaUrl());
 });
 
-// O botão do cabeçalho leva para a página da garagem,
-// onde o formulário de veículo é aberto.
+
 document.getElementById("adicionar-veiculo")
     .addEventListener("click", () => {
         if (paginaDaUrl() !== "garagem") {

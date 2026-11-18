@@ -1,4 +1,4 @@
-# Garagem Digital
+- Garagem Digital - 
 
 ## Estrutura
 - index.html
@@ -6,9 +6,10 @@
 - js/veiculos.js
 - js/manutencoes.js
 - js/despesas.js
+- js/estatisticas.js
 - js/dashboard.js
 
-## Como executar
+- Como executar
 Abra o arquivo index.html no navegador. Os dados são armazenados no localStorage do navegador.
 
 ## Observações

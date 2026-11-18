@@ -54,9 +54,7 @@ function atualizarDashboard() {
     renderizarGrafico(despesas, manutencoes);
 }
 
-// ========================================
-// GRÁFICO DE PIZZA (gastos)
-// ========================================
+
 
 const CORES_GRAFICO = [
     "#f01e2c", "#ffb020", "#e5e7eb", "#3b82f6", "#22c55e",

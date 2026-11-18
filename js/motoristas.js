@@ -1,9 +1,4 @@
-// ========================================
-// MOTORISTAS
-// Cadastro de motoristas com dados pessoais e CNH.
-// A atribuição ao veículo é feita no formulário do veículo
-// (campo "Motorista responsável").
-// ========================================
+
 
 const CHAVE_MOTORISTAS = "garagem_motoristas";
 
@@ -27,9 +22,7 @@ const camposMotorista = {
     observacoes: document.getElementById("motorista-observacoes")
 };
 
-// ========================================
-// ARMAZENAMENTO
-// ========================================
+
 
 function obterMotoristas() {
     try {
@@ -57,9 +50,7 @@ function salvarMotoristas(motoristas) {
     }
 }
 
-// ========================================
-// UTILITÁRIOS
-// ========================================
+
 
 function apenasDigitos(valor) {
     return String(valor || "").replace(/\D/g, "");
@@ -147,9 +138,7 @@ function telefoneValido(telefone) {
     return tamanho === 10 || tamanho === 11;
 }
 
-// ========================================
-// MÁSCARAS NOS CAMPOS
-// ========================================
+
 
 camposMotorista.cpf.addEventListener("input", () => {
     camposMotorista.cpf.value = mascararCpf(camposMotorista.cpf.value);
@@ -170,9 +159,7 @@ camposMotorista.cnh.addEventListener("input", () => {
         apenasDigitos(camposMotorista.cnh.value).slice(0, 11);
 });
 
-// ========================================
-// STATUS DA CNH
-// ========================================
+
 
 function statusCnh(validade) {
     if (!validade) {
@@ -204,7 +191,7 @@ function statusCnh(validade) {
     return { classe: "valida", texto: "CNH válida" };
 }
 
-// Usada pelo cadastro de veículos ao atribuir um motorista.
+
 function avisoCnhMotorista(motoristaId) {
     const motorista = obterMotoristas()
         .find(item => item.id === motoristaId);
@@ -219,9 +206,7 @@ function avisoCnhMotorista(motoristaId) {
     return "";
 }
 
-// ========================================
-// FORMULÁRIO
-// ========================================
+
 
 function abrirFormularioMotorista() {
     formMotorista.reset();
@@ -247,9 +232,7 @@ document.getElementById("abrir-form-motorista")
 document.getElementById("cancelar-motorista")
     .addEventListener("click", fecharFormularioMotorista);
 
-// ========================================
-// CADASTRAR / EDITAR
-// ========================================
+
 
 formMotorista.addEventListener("submit", event => {
     event.preventDefault();
@@ -336,14 +319,11 @@ formMotorista.addEventListener("submit", event => {
 
     fecharFormularioMotorista();
 
-    // renderizarVeiculos também atualiza a lista de motoristas
-    // e o seletor de motorista no formulário do veículo.
+    
     renderizarVeiculos();
 });
 
-// ========================================
-// EDITAR
-// ========================================
+
 
 function editarMotorista(id) {
     const motorista = obterMotoristas().find(item => item.id === id);
@@ -370,9 +350,7 @@ function editarMotorista(id) {
     camposMotorista.nome.focus();
 }
 
-// ========================================
-// EXCLUIR
-// ========================================
+
 
 function excluirMotorista(id) {
     const motorista = obterMotoristas().find(item => item.id === id);
@@ -400,9 +378,7 @@ function excluirMotorista(id) {
     renderizarVeiculos();
 }
 
-// ========================================
-// ALERTAS DE CNH
-// ========================================
+
 
 function renderizarAlertasMotoristas(motoristas) {
     alertasMotoristas.innerHTML = "";
@@ -436,9 +412,7 @@ function renderizarAlertasMotoristas(motoristas) {
     });
 }
 
-// ========================================
-// CARDS
-// ========================================
+
 
 function criarInfoMotorista(rotulo, valor, larga = false) {
     const bloco = document.createElement("div");
@@ -565,9 +539,5 @@ function renderizarMotoristas() {
     });
 }
 
-// ========================================
-// INICIALIZAÇÃO
-// ========================================
 
-// Atualiza veículos (nome do motorista e seletor) e a lista de motoristas.
 renderizarVeiculos();
