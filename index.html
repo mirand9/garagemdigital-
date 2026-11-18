@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Gerencie seus veículos, manutenções e despesas.">
-    <meta name="theme-color" content="#17191d">
+    <meta name="theme-color" content="#0c0d10">
     <title>Garagem Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
@@ -15,10 +18,19 @@
 
     <!-- MENU LATERAL -->
     <aside class="sidebar">
+        <div class="brand">
+            <span class="brand-mark" aria-hidden="true">GD</span>
+            <div class="brand-text">
+                <strong>Garagem</strong>
+                <span>Digital</span>
+            </div>
+        </div>
+
         <nav aria-label="Menu principal">
             <ul class="menu-list">
                 <li><a href="#inicio" class="active">Visão Geral</a></li>
                 <li><a href="#garagem">Minha Garagem</a></li>
+                <li><a href="#motoristas">Motoristas</a></li>
                 <li><a href="#estatisticas">Estatísticas</a></li>
                 <li><a href="#manutencoes">Manutenções</a></li>
                 <li><a href="#despesas">Despesas</a></li>
@@ -82,6 +94,33 @@
                         <p>Em todos os veículos</p>
                     </article>
 
+                </div>
+
+                <div class="dashboard-section grafico-section">
+                    <div class="grafico-topo">
+                        <h3>Distribuição dos gastos</h3>
+
+                        <div class="campo grafico-filtro">
+                            <label for="grafico-agrupar">Agrupar por</label>
+                            <select id="grafico-agrupar">
+                                <option value="categoria">Categoria</option>
+                                <option value="veiculo">Veículo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="grafico-corpo" class="grafico-corpo">
+                        <div id="grafico-pizza" class="grafico-pizza" role="img"></div>
+
+                        <div class="grafico-detalhes">
+                            <ul id="grafico-legenda" class="grafico-legenda"></ul>
+                            <p id="grafico-total" class="grafico-total"></p>
+                        </div>
+                    </div>
+
+                    <p id="grafico-vazio" class="mensagem-vazia hidden">
+                        Registre despesas ou manutenções para ver o gráfico.
+                    </p>
                 </div>
 
                 <div class="dashboard-section">
@@ -183,6 +222,15 @@
                                        placeholder="Ex: Preto">
                             </div>
 
+                            <div class="campo campo-completo">
+                                <label for="motorista">
+                                    Motorista responsável
+                                </label>
+                                <select id="motorista">
+                                    <option value="">Sem motorista</option>
+                                </select>
+                            </div>
+
                         </div>
 
                         <div class="form-acoes">
@@ -201,6 +249,176 @@
                 <!-- VEÍCULOS CADASTRADOS -->
 
                 <div id="lista-veiculos" class="veiculos-grid"></div>
+
+            </section>
+
+
+            <!-- ================================= -->
+            <!-- MOTORISTAS -->
+            <!-- ================================= -->
+
+            <section id="motoristas">
+
+                <div class="secao-header">
+                    <div>
+                        <h2>Motoristas</h2>
+                        <p>
+                            Cadastre os motoristas e atribua cada um aos
+                            seus veículos em Minha Garagem.
+                        </p>
+                    </div>
+
+                    <button type="button" id="abrir-form-motorista">
+                        + Novo motorista
+                    </button>
+                </div>
+
+                <!-- ALERTAS DE CNH -->
+
+                <div id="alertas-motoristas"
+                     class="alertas-manutencao"></div>
+
+                <!-- FORMULÁRIO DE MOTORISTA -->
+
+                <div id="formulario-motorista"
+                     class="formulario-container hidden">
+
+                    <h3 id="titulo-form-motorista">Cadastrar motorista</h3>
+
+                    <form id="form-motorista">
+
+                        <input type="hidden" id="motorista-id">
+
+                        <div class="form-grid">
+
+                            <h4 class="form-subtitulo">Dados pessoais</h4>
+
+                            <div class="campo campo-completo">
+                                <label for="motorista-nome">
+                                    Nome completo *
+                                </label>
+                                <input type="text" id="motorista-nome"
+                                       required autocomplete="off"
+                                       placeholder="Ex: João da Silva">
+                            </div>
+
+                            <div class="campo">
+                                <label for="motorista-cpf">CPF</label>
+                                <input type="text" id="motorista-cpf"
+                                       inputmode="numeric" maxlength="14"
+                                       autocomplete="off"
+                                       placeholder="000.000.000-00">
+                            </div>
+
+                            <div class="campo">
+                                <label for="motorista-nascimento">
+                                    Data de nascimento
+                                </label>
+                                <input type="date" id="motorista-nascimento">
+                            </div>
+
+                            <div class="campo">
+                                <label for="motorista-telefone">
+                                    Telefone
+                                </label>
+                                <input type="tel" id="motorista-telefone"
+                                       maxlength="15" autocomplete="off"
+                                       placeholder="(00) 00000-0000">
+                            </div>
+
+                            <div class="campo">
+                                <label for="motorista-email">E-mail</label>
+                                <input type="email" id="motorista-email"
+                                       autocomplete="off"
+                                       placeholder="nome@email.com">
+                            </div>
+
+                            <h4 class="form-subtitulo">Habilitação (CNH)</h4>
+
+                            <div class="campo">
+                                <label for="motorista-cnh">
+                                    Número da CNH
+                                </label>
+                                <input type="text" id="motorista-cnh"
+                                       inputmode="numeric" maxlength="11"
+                                       autocomplete="off"
+                                       placeholder="11 dígitos">
+                            </div>
+
+                            <div class="campo">
+                                <label for="motorista-categoria">
+                                    Categoria
+                                </label>
+                                <select id="motorista-categoria">
+                                    <option value="">Selecione</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="ACC">ACC</option>
+                                </select>
+                            </div>
+
+                            <div class="campo">
+                                <label for="motorista-validade-cnh">
+                                    Validade da CNH
+                                </label>
+                                <input type="date"
+                                       id="motorista-validade-cnh">
+                            </div>
+
+                            <h4 class="form-subtitulo">
+                                Contato de emergência
+                            </h4>
+
+                            <div class="campo">
+                                <label for="motorista-emergencia-nome">
+                                    Nome
+                                </label>
+                                <input type="text"
+                                       id="motorista-emergencia-nome"
+                                       autocomplete="off">
+                            </div>
+
+                            <div class="campo">
+                                <label for="motorista-emergencia-telefone">
+                                    Telefone
+                                </label>
+                                <input type="tel"
+                                       id="motorista-emergencia-telefone"
+                                       maxlength="15" autocomplete="off"
+                                       placeholder="(00) 00000-0000">
+                            </div>
+
+                            <div class="campo campo-completo">
+                                <label for="motorista-observacoes">
+                                    Observações
+                                </label>
+                                <textarea id="motorista-observacoes"
+                                          rows="3"
+                                          placeholder="Informações adicionais sobre o motorista"></textarea>
+                            </div>
+
+                        </div>
+
+                        <div class="form-acoes">
+                            <button type="submit">Salvar motorista</button>
+
+                            <button type="button"
+                                    id="cancelar-motorista"
+                                    class="btn-secundario">
+                                Cancelar
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- MOTORISTAS CADASTRADOS -->
+
+                <div id="lista-motoristas" class="veiculos-grid"></div>
 
             </section>
 
@@ -606,6 +824,7 @@
                 <h2>Configurações</h2>
                 <p>Os dados deste projeto ficam salvos neste navegador, usando o armazenamento local.</p>
                 <p>Se limpar os dados do navegador, os registros poderão ser apagados.</p>
+                <p>Os dados pessoais dos motoristas (CPF, CNH, telefone e outros) também ficam apenas neste navegador. Evite usar este painel em computadores compartilhados.</p>
             </section>
 
         </main>
@@ -615,7 +834,9 @@
 <script src="./js/veiculos.js"></script>
 <script src="./js/manutencoes.js"></script>
 <script src="./js/despesas.js"></script>
+<script src="./js/motoristas.js"></script>
 <script src="./js/dashboard.js"></script>
+<script src="./js/navegacao.js"></script>
 
 </body>
 </html>

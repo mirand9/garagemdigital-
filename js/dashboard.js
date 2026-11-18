@@ -51,6 +51,193 @@ function atualizarDashboard() {
     atualizarTexto("estatistica-investimento", moeda(totalInvestido));
 
     renderizarUltimasMovimentacoes(despesas, manutencoes);
+    renderizarGrafico(despesas, manutencoes);
+}
+
+// ========================================
+// GRÁFICO DE PIZZA (gastos)
+// ========================================
+
+const CORES_GRAFICO = [
+    "#f01e2c", "#ffb020", "#e5e7eb", "#3b82f6", "#22c55e",
+    "#a855f7", "#14b8a6", "#ec4899", "#f97316", "#6b7280"
+];
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+function moedaGrafico(valor) {
+    return Number(valor).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
+
+function agruparGastos(modo, despesas, manutencoes) {
+    const veiculos = lerLista("garagem_veiculos");
+    const mapa = new Map();
+
+    const nomeVeiculo = id => {
+        const veiculo = veiculos.find(item => item.id === id);
+        return veiculo
+            ? `${veiculo.marca} ${veiculo.modelo}`
+            : "Veículo removido";
+    };
+
+    const somar = (chave, valor) => {
+        if (!Number.isFinite(valor) || valor <= 0) return;
+        mapa.set(chave, (mapa.get(chave) || 0) + valor);
+    };
+
+    despesas.forEach(item => {
+        somar(
+            modo === "veiculo"
+                ? nomeVeiculo(item.veiculoId)
+                : (item.categoria || "Outros"),
+            Number(item.valor || 0)
+        );
+    });
+
+    manutencoes.forEach(item => {
+        somar(
+            modo === "veiculo"
+                ? nomeVeiculo(item.veiculoId)
+                : "Manutenção",
+            Number(item.valor || 0)
+        );
+    });
+
+    return Array.from(mapa, ([nome, valor]) => ({ nome, valor }))
+        .sort((a, b) => b.valor - a.valor);
+}
+
+function criarFatia(item, indice, inicio, fim, total) {
+    const centro = 100;
+    const raio = 95;
+
+    const ponto = angulo => [
+        centro + raio * Math.cos(angulo),
+        centro + raio * Math.sin(angulo)
+    ];
+
+    let forma;
+
+    if (fim - inicio >= Math.PI * 2 - 0.0001) {
+        forma = document.createElementNS(SVG_NS, "circle");
+        forma.setAttribute("cx", centro);
+        forma.setAttribute("cy", centro);
+        forma.setAttribute("r", raio);
+    } else {
+        const [x1, y1] = ponto(inicio);
+        const [x2, y2] = ponto(fim);
+        const arcoGrande = fim - inicio > Math.PI ? 1 : 0;
+
+        forma = document.createElementNS(SVG_NS, "path");
+        forma.setAttribute(
+            "d",
+            `M ${centro} ${centro} L ${x1} ${y1} ` +
+            `A ${raio} ${raio} 0 ${arcoGrande} 1 ${x2} ${y2} Z`
+        );
+    }
+
+    forma.setAttribute("class", "fatia");
+    forma.setAttribute("fill", CORES_GRAFICO[indice % CORES_GRAFICO.length]);
+
+    const dica = document.createElementNS(SVG_NS, "title");
+    dica.textContent =
+        `${item.nome}: ${moedaGrafico(item.valor)} ` +
+        `(${((item.valor / total) * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%)`;
+
+    forma.appendChild(dica);
+
+    return forma;
+}
+
+function renderizarGrafico(despesas, manutencoes) {
+    const pizza = document.getElementById("grafico-pizza");
+    const legenda = document.getElementById("grafico-legenda");
+    const corpo = document.getElementById("grafico-corpo");
+    const vazio = document.getElementById("grafico-vazio");
+    const textoTotal = document.getElementById("grafico-total");
+    const seletor = document.getElementById("grafico-agrupar");
+
+    if (!pizza || !legenda || !corpo || !vazio || !textoTotal || !seletor) return;
+
+    const itens = agruparGastos(seletor.value, despesas, manutencoes);
+    const total = itens.reduce((soma, item) => soma + item.valor, 0);
+
+    pizza.innerHTML = "";
+    legenda.innerHTML = "";
+
+    corpo.classList.toggle("hidden", itens.length === 0);
+    vazio.classList.toggle("hidden", itens.length > 0);
+
+    if (itens.length === 0) {
+        pizza.removeAttribute("aria-label");
+        textoTotal.textContent = "";
+        return;
+    }
+
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("viewBox", "0 0 200 200");
+    svg.setAttribute("aria-hidden", "true");
+
+    const fatias = [];
+    let angulo = -Math.PI / 2;
+
+    itens.forEach((item, indice) => {
+        const fim = angulo + (item.valor / total) * Math.PI * 2;
+        const fatia = criarFatia(item, indice, angulo, fim, total);
+
+        fatias.push(fatia);
+        svg.appendChild(fatia);
+
+        angulo = fim;
+
+        const cor = CORES_GRAFICO[indice % CORES_GRAFICO.length];
+        const porcentagem = (item.valor / total * 100)
+            .toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+
+        const linha = document.createElement("li");
+        linha.style.setProperty("--cor", cor);
+
+        const amostra = document.createElement("span");
+        amostra.className = "legenda-cor";
+
+        const nome = document.createElement("span");
+        nome.className = "legenda-nome";
+        nome.textContent = item.nome;
+
+        const percentual = document.createElement("strong");
+        percentual.className = "legenda-percentual";
+        percentual.textContent = `${porcentagem}%`;
+
+        const valor = document.createElement("span");
+        valor.className = "legenda-valor";
+        valor.textContent = moedaGrafico(item.valor);
+
+        linha.append(amostra, nome, percentual, valor);
+
+        linha.addEventListener("mouseenter", () =>
+            fatia.classList.add("destaque")
+        );
+        linha.addEventListener("mouseleave", () =>
+            fatia.classList.remove("destaque")
+        );
+
+        legenda.appendChild(linha);
+    });
+
+    pizza.appendChild(svg);
+
+    pizza.setAttribute(
+        "aria-label",
+        "Gráfico de pizza dos gastos: " +
+        itens.map(item =>
+            `${item.nome} ${moedaGrafico(item.valor)}`
+        ).join(", ")
+    );
+
+    textoTotal.textContent = `Total: ${moedaGrafico(total)}`;
 }
 
 function renderizarUltimasMovimentacoes(despesas, manutencoes) {
@@ -99,6 +286,12 @@ function renderizarUltimasMovimentacoes(despesas, manutencoes) {
         linha.textContent = `${data} · ${item.tipo}: ${item.descricao} · ${valor}`;
         lista.appendChild(linha);
     });
+}
+
+const seletorGrafico = document.getElementById("grafico-agrupar");
+
+if (seletorGrafico) {
+    seletorGrafico.addEventListener("change", atualizarDashboard);
 }
 
 atualizarDashboard();

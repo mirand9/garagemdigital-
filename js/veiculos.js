@@ -16,7 +16,8 @@ const campos = {
     motor: document.getElementById("motor"),
     combustivel: document.getElementById("combustivel"),
     quilometragem: document.getElementById("quilometragem"),
-    cor: document.getElementById("cor")
+    cor: document.getElementById("cor"),
+    motoristaId: document.getElementById("motorista")
 };
 
 function gerarId() {
@@ -49,6 +50,7 @@ function abrirFormulario() {
     formulario.reset();
     campos.id.value = "";
     document.getElementById("titulo-formulario").textContent = "Cadastrar veículo";
+    carregarSelectMotoristas();
     containerFormulario.classList.remove("hidden");
     campos.marca.focus();
 }
@@ -76,7 +78,8 @@ formulario.addEventListener("submit", event => {
         motor: campos.motor.value.trim(),
         combustivel: campos.combustivel.value,
         quilometragem: Number(campos.quilometragem.value),
-        cor: campos.cor.value.trim()
+        cor: campos.cor.value.trim(),
+        motoristaId: campos.motoristaId.value
     };
 
     const anoAtual = new Date().getFullYear();
@@ -97,6 +100,17 @@ formulario.addEventListener("submit", event => {
     }
 
     const veiculos = obterVeiculos();
+    // Avisa se o motorista escolhido está com a CNH vencida
+    const anterior = id ? veiculos.find(item => item.id === id) : null;
+    const motoristaMudou = !anterior || anterior.motoristaId !== veiculo.motoristaId;
+
+    if (motoristaMudou && veiculo.motoristaId &&
+        typeof avisoCnhMotorista === "function") {
+        const aviso = avisoCnhMotorista(veiculo.motoristaId);
+
+        if (aviso && !confirm(aviso)) return;
+    }
+
     const placaDuplicada = veiculo.placa && veiculos.some(item =>
         item.placa &&
         item.placa.toUpperCase() === veiculo.placa &&
@@ -128,6 +142,48 @@ formulario.addEventListener("submit", event => {
     if (typeof carregarSelectDespesas === "function") carregarSelectDespesas();
     if (typeof atualizarDashboard === "function") atualizarDashboard();
 });
+
+function nomeMotoristaDoVeiculo(motoristaId) {
+    if (!motoristaId) return "Sem motorista";
+    if (typeof obterMotoristas !== "function") return "Sem motorista";
+
+    const motorista = obterMotoristas()
+        .find(item => item.id === motoristaId);
+
+    return motorista ? motorista.nome : "Motorista removido";
+}
+
+function carregarSelectMotoristas() {
+    const select = campos.motoristaId;
+    if (!select) return;
+
+    const selecionado = select.value;
+
+    select.innerHTML = "";
+
+    const inicial = document.createElement("option");
+    inicial.value = "";
+    inicial.textContent = "Sem motorista";
+    select.appendChild(inicial);
+
+    if (typeof obterMotoristas === "function") {
+        obterMotoristas()
+            .slice()
+            .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
+            .forEach(motorista => {
+                const opcao = document.createElement("option");
+
+                opcao.value = motorista.id;
+                opcao.textContent = motorista.nome;
+
+                select.appendChild(opcao);
+            });
+    }
+
+    if (Array.from(select.options).some(opcao => opcao.value === selecionado)) {
+        select.value = selecionado;
+    }
+}
 
 function criarInfoVeiculo(rotulo, valor) {
     const bloco = document.createElement("div");
@@ -171,7 +227,8 @@ function renderizarVeiculos() {
             criarInfoVeiculo("Motor", veiculo.motor || "Não informado"),
             criarInfoVeiculo("Combustível", veiculo.combustivel || "Não informado"),
             criarInfoVeiculo("Quilometragem", `${Number(veiculo.quilometragem || 0).toLocaleString("pt-BR")} km`),
-            criarInfoVeiculo("Cor", veiculo.cor || "Não informada")
+            criarInfoVeiculo("Cor", veiculo.cor || "Não informada"),
+            criarInfoVeiculo("Motorista", nomeMotoristaDoVeiculo(veiculo.motoristaId))
         );
 
         const acoes = document.createElement("div");
@@ -195,6 +252,9 @@ function renderizarVeiculos() {
 
     if (typeof carregarVeiculosSelect === "function") carregarVeiculosSelect();
     if (typeof carregarSelectDespesas === "function") carregarSelectDespesas();
+
+    carregarSelectMotoristas();
+    if (typeof renderizarMotoristas === "function") renderizarMotoristas();
 }
 
 function editarVeiculo(id) {
@@ -210,6 +270,8 @@ function editarVeiculo(id) {
     campos.combustivel.value = veiculo.combustivel || "";
     campos.quilometragem.value = veiculo.quilometragem ?? 0;
     campos.cor.value = veiculo.cor || "";
+    carregarSelectMotoristas();
+    campos.motoristaId.value = veiculo.motoristaId || "";
 
     document.getElementById("titulo-formulario").textContent = "Editar veículo";
     containerFormulario.classList.remove("hidden");
